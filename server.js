@@ -7,12 +7,34 @@ dotenv.config()
 
 import 'express-async-errors'
 import morgan from 'morgan';
+
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
 // db and auth user
 import connectDB from './db/connect.js';
 
 // router
 import authRouter from './routes/authRoutes.js'
 import jobsRouter from './routes/jobsRoutes.js'
+
+
+
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// // only when ready to deploy
+// app.use(express.static(path.resolve(__dirname, './client/build')));
+
+// // routes
+// app.use('/api/v1/auth', authRouter);
+// app.use('/api/v1/jobs', authenticateUser, jobsRouter);
+
+// // only when ready to deploy
+// app.get('*', function (request, response) {
+//   response.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+// });
+
 
 // middleware
 import notFoundMiddleware from './middleware/not-found.js';

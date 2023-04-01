@@ -298,7 +298,7 @@ const AppProvider = ({ children }) => {
           },
         });
       } catch (error) {
-        // logoutUser()
+        logoutUser()
       }
       clearAlert();
     }
@@ -361,8 +361,8 @@ const AppProvider = ({ children }) => {
           },
         })
       } catch (error) {
-  console.log(error.response)
-        // logoutUser()
+        // console.log(error.response)
+        logoutUser()
       }
   
   clearAlert()
