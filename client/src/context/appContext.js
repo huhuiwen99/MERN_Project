@@ -70,6 +70,11 @@ const initialState = {
     page: 1,
     stats: {},
     monthlyApplications: [],
+    search: '',
+    searchStatus: 'all',
+    searchType: 'all',
+    sort: 'latest',
+    sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 }
 
 const AppContext  = React.createContext()
@@ -239,6 +244,7 @@ const AppProvider = ({ children }) => {
         payload: { name, value },
       })
     }
+
     const clearValues = () => {
       dispatch({ type: CLEAR_VALUES })
     }
@@ -271,12 +277,18 @@ const AppProvider = ({ children }) => {
     };
 
     const getJobs = async () => {
-      let url = `/jobs`
     
-      dispatch({ type: GET_JOBS_BEGIN })
+      const { page, search, searchStatus, searchType, sort } = state;
+
+      let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+      // let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+      if (search) {
+        url = url + `&search=${search}`;
+      }
+      dispatch({ type: GET_JOBS_BEGIN });
       try {
-        const { data } = await authFetch(url)
-        const { jobs, totalJobs, numOfPages } = data
+        const { data } = await authFetch(url);
+        const { jobs, totalJobs, numOfPages } = data;
         dispatch({
           type: GET_JOBS_SUCCESS,
           payload: {
@@ -284,17 +296,17 @@ const AppProvider = ({ children }) => {
             totalJobs,
             numOfPages,
           },
-        })
+        });
       } catch (error) {
-        console.log(error.response)
-        logoutUser()
+        // logoutUser()
       }
-      clearAlert()
+      clearAlert();
     }
 
     const setEditJob = (id) => {
       dispatch({ type: SET_EDIT_JOB, payload: { id } })
     }
+
     const editJob = async () => {
       dispatch({ type: EDIT_JOB_BEGIN });
       try {
@@ -355,6 +367,13 @@ const AppProvider = ({ children }) => {
   
   clearAlert()
     }
+
+    const clearFilters = () =>{
+      dispatch({ type: CLEAR_FILTERS });
+    }
+    const changePage = (page) => {
+      dispatch({ type: CHANGE_PAGE, payload: { page } })
+    }
     
     // useEffect(() => {
     //   getJobs()
@@ -381,6 +400,8 @@ const AppProvider = ({ children }) => {
         editJob, 
         deleteJob,
         showStats,
+        clearFilters,
+        changePage
         }}
     >
         {children}

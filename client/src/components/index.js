@@ -13,6 +13,7 @@ import Job from './Job'
 import StatsContainer from './StatsContainer'
 import ChartsContainer from './ChartsContainer'
 import StatsItem from './StatsItem'
+import PageButtonContainer from './PageBtnContainer'
 // import BarChart from './BarChart'
 // import AreaChart from './AreaChart'
 
@@ -33,6 +34,7 @@ export {
     StatsContainer,
     ChartsContainer,
     StatsItem,
+    PageButtonContainer
     // BarChart,
     // AreaChart
 }
