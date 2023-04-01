@@ -339,7 +339,7 @@ const AppProvider = ({ children }) => {
         await authFetch.delete(`/jobs/${jobId}`);
         getJobs();
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         if(error.response.status === 401) return;
         dispatch({
           type: DELETE_JOB_ERROR,
