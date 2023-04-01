@@ -140,8 +140,9 @@ const reducer = (state, action) => {
         ...initialState,
         user: null,
         // token: null,
-        userLocation: '',
-        jobLocation: '',
+        // userLocation: '',
+        // jobLocation: '',
+        userLoading: false,
       };
     }
     if (action.type === UPDATE_USER_BEGIN) {
@@ -288,11 +289,21 @@ const reducer = (state, action) => {
       return { ...state, page: action.payload.page };
     }
     if (action.type === HANDLE_CHANGE) {
-      // set back to first page
-    
+      // set back to first page 
       return { ...state, page: 1, [action.payload.name]: action.payload.value };
     }
-    
+    if (action.type === GET_CURRENT_USER_BEGIN) {
+      return { ...state, userLoading: true, showAlert: false };
+    }
+    if (action.type === GET_CURRENT_USER_SUCCESS) {
+      return {
+        ...state,
+        userLoading: false,
+        user: action.payload.user,
+        userLocation: action.payload.location,
+        jobLocation: action.payload.location,
+      };
+    } 
     throw new Error(`No such action: ${action.type}`)
 }
 

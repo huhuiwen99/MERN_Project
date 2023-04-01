@@ -210,7 +210,8 @@ const AppProvider = ({ children }) => {
       dispatch({ type: TOGGLE_SIDEBAR });
     };
 
-    const logoutUser = () => {
+    const logoutUser = async () => {
+      await authFetch.get('/auth/logout');
       dispatch({ type: LOGOUT_USER })
       // removeUserFromLocalStorage()
     }
@@ -378,6 +379,24 @@ const AppProvider = ({ children }) => {
     // useEffect(() => {
     //   getJobs()
     // }, [])
+    const getCurrentUser = async () => {
+      dispatch({ type: GET_CURRENT_USER_BEGIN });
+      try {
+        const { data } = await authFetch('/auth/getCurrentUser');
+        const { user, location } = data;
+    
+        dispatch({
+          type: GET_CURRENT_USER_SUCCESS,
+          payload: { user, location },
+        });
+      } catch (error) {
+        if (error.response.status === 401) return;
+        logoutUser();
+      }
+    };
+    useEffect(() => {
+      getCurrentUser();
+    }, []);
   
       
     return (
